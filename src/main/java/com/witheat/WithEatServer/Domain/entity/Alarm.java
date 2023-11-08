@@ -23,6 +23,8 @@ public class Alarm extends Time{
     private String empty_plan;
 
     // button..???
+    /*@Column
+    private String user_plan;*/
 
     @Builder
     public Alarm(String intermit_plan, String water_plan, String empty_plan) {
