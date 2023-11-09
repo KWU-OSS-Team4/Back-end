@@ -41,6 +41,9 @@ public class User extends Time {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<UserCalendar> userCalendars = new ArrayList<>();
 
+    @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<Calendar> calendars = new ArrayList<>();
+
     @Builder
     public User(String name, String email, String password, boolean agreement, boolean gender, String plan_name) {
         this.name = name;
