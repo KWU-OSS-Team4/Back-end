@@ -10,20 +10,27 @@ import com.witheat.WithEatServer.Exception.BaseException;
 import com.witheat.WithEatServer.Repository.CalendarRepository;
 import com.witheat.WithEatServer.Repository.UserCalendarRepository;
 import com.witheat.WithEatServer.Repository.UserRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class CalendarService {
+
     private final CalendarRepository calendarRepository;
     private final UserRepository userRepository;
     private final UserCalendarRepository userCalendarRepository;
-
+    public CalendarService(CalendarRepository calendarRepository, UserRepository userRepository, UserCalendarRepository userCalendarRepository){
+        this.calendarRepository = calendarRepository;
+        this.userRepository = userRepository;
+        this.userCalendarRepository = userCalendarRepository;
+    }
     public CalendarCreateResponseDto generateCalendar(Long userId,
                                                       CalendarCreateRequestDto calendarCreateRequestDto) {
         User user = userRepository.findById(userId).orElseThrow(()
