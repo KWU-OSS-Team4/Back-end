@@ -22,5 +22,5 @@ public class UserWeight {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "weight_id")
-    private Height weight;
+    private Weight weight;
 }
