@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -12,5 +14,5 @@ import lombok.NoArgsConstructor;
 public class CalendarResponseDto {
     private Long calendar_id;
     private String calendar_name;
-    private String calendar_date;
+    private LocalDate calendar_date;
 }
