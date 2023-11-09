@@ -1,10 +1,7 @@
 package com.witheat.WithEatServer.Domain.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +10,7 @@ import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
+@Entity
 public class Weight extends Time {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

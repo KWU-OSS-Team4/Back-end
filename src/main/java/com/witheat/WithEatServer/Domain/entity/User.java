@@ -1,5 +1,6 @@
 package com.witheat.WithEatServer.Domain.entity;
 
+import com.witheat.WithEatServer.Domain.Dto.request.UserRequestDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -30,7 +31,7 @@ public class User extends Time {
     private boolean agreement;
 
     @Column(nullable = false)
-    private boolean gender;
+    private Boolean gender;
 
     @Column(nullable = false)
     private String plan_name;
@@ -38,6 +39,13 @@ public class User extends Time {
     // height, weight는 OneToMany
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 //    public List<UserHeight>
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<Height> heights = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<Weight> weights = new ArrayList<>();
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<UserCalendar> userCalendars = new ArrayList<>();
 
@@ -52,5 +60,13 @@ public class User extends Time {
         this.agreement = agreement;
         this.gender = gender;
         this.plan_name = plan_name;
+    }
+
+    public User(UserRequestDto dto) {
+        this.name = dto.getName();
+        this.email = dto.getEmail();
+        this.password = dto.getPassword();
+        this.gender = dto.getGender();
+        this.plan_name = dto.getPlan_name();
     }
 }

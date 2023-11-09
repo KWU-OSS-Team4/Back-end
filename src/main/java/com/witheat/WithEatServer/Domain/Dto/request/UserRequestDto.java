@@ -11,7 +11,7 @@ public class UserRequestDto {
     private String name;
     private String email;
     private String password;
-    private boolean gender;
+    private Boolean gender;
     private String plan_name;
 
 // height, weight를 어디서 받아야할지 모르겠음

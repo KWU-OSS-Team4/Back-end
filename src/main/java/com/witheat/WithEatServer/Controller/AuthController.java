@@ -4,6 +4,7 @@ import com.witheat.WithEatServer.Domain.Dto.request.UserRequestDto;
 import com.witheat.WithEatServer.Service.Utils.AuthService;
 import com.witheat.WithEatServer.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +18,9 @@ public class AuthController {
     private final AuthService authService;
 
     // 회원가입
-//    @PostMapping("/signup")
-//    public BaseResponse signup(@RequestBody UserRequestDto userRequestDto) {
-//        authService.join(userRequestDto);
-//    }
+    @PostMapping("/signup")
+    public BaseResponse signup(@RequestBody UserRequestDto userRequestDto) {
+        authService.join(userRequestDto);
+        return new BaseResponse(HttpStatus.OK.value(), "회원가입이 완료되었습니다.");
+    }
 }
