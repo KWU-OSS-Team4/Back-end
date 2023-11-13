@@ -4,6 +4,7 @@ import com.witheat.WithEatServer.Domain.Dto.request.UserRequestDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
@@ -69,4 +70,11 @@ public class User extends Time {
         this.gender = dto.getGender();
         this.plan_name = dto.getPlan_name();
     }
+
+    //User과 Weight UserWeight 를 모두 양방향 관계를 가지도록 함
+    public void addWeight(Weight weight){
+        weights.add(weight);
+        weight.setUser(this);
+    }
+
 }

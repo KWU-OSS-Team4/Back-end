@@ -1,4 +1,4 @@
-package com.witheat.WithEatServer.Service.Utils;
+package com.witheat.WithEatServer.Service;
 
 import com.witheat.WithEatServer.Domain.Dto.request.CalendarCreateRequestDto;
 import com.witheat.WithEatServer.Domain.Dto.response.CalendarCreateResponseDto;

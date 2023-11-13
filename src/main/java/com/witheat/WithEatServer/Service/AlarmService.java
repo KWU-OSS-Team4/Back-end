@@ -1,4 +1,4 @@
-package com.witheat.WithEatServer.Service.Utils;
+package com.witheat.WithEatServer.Service;
 
 import com.witheat.WithEatServer.Domain.Dto.request.AlarmCreateRequestDto;
 import com.witheat.WithEatServer.Domain.Dto.response.AlarmCreateResponseDto;

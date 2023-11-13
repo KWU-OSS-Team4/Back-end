@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -16,17 +18,38 @@ public class Weight extends Time {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long weight_id;
 
+    //@Getter
     @Column(nullable = false)
     private int weight;
 
     @Column(nullable = false)
-    private LocalDate weight_date;
+    private LocalDate weight_date; //몸무게 마지막 변경 날짜
 
-    // @OneToMany -> user랑 weight 엮어서 만들기
+    //user가 weight 를 관리하게 하기
+    @OneToMany(mappedBy = "weight", cascade = CascadeType.ALL, orphanRemoval = true) //-> user랑 weight 엮어서 만들기
+    private final List<UserWeight> userWeights = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Builder
     public Weight(int weight, LocalDate weight_date) {
         this.weight = weight;
         this.weight_date = weight_date;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public void setWeight_date(LocalDate weight_date){
+        this.weight_date = weight_date;
+    }
+
+    public void setUser(User user)
+    {
+        this.user =user;
+        user.getWeights().add(this);
     }
 }

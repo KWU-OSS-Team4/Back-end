@@ -1,7 +1,7 @@
 package com.witheat.WithEatServer.Controller;
 
 import com.witheat.WithEatServer.Domain.Dto.request.UserRequestDto;
-import com.witheat.WithEatServer.Service.Utils.AuthService;
+import com.witheat.WithEatServer.Service.AuthService;
 import com.witheat.WithEatServer.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

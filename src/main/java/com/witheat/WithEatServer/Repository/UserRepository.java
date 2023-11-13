@@ -11,5 +11,8 @@ import java.util.Optional;
 @Repository
 @EnableJpaRepositories
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByEmail(String email);
+    Optional<User> findByEmail(String email); //회원 가입을 위함
+
 }
+
+

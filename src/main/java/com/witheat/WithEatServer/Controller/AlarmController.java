@@ -3,7 +3,7 @@ package com.witheat.WithEatServer.Controller;
 import com.witheat.WithEatServer.Domain.Dto.request.AlarmCreateRequestDto;
 import com.witheat.WithEatServer.Domain.Dto.response.AlarmCreateResponseDto;
 import com.witheat.WithEatServer.Exception.BaseException;
-import com.witheat.WithEatServer.Service.Utils.AlarmService;
+import com.witheat.WithEatServer.Service.AlarmService;
 import com.witheat.WithEatServer.common.BaseErrorResponse;
 import com.witheat.WithEatServer.common.BaseResponse;
 import lombok.RequiredArgsConstructor;

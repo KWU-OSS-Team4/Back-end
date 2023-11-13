@@ -1,12 +1,13 @@
 package com.witheat.WithEatServer.Controller;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import com.witheat.WithEatServer.Domain.Dto.request.CalendarCreateRequestDto;
+import com.witheat.WithEatServer.Domain.Dto.request.UserWeightCreateRequestDto;
 import com.witheat.WithEatServer.Domain.Dto.response.CalendarCreateResponseDto;
 import com.witheat.WithEatServer.Domain.Dto.response.CalendarResponseDto;
+import com.witheat.WithEatServer.Domain.Dto.response.UserWeightCreateResponseDto;
 import com.witheat.WithEatServer.Exception.BaseException;
-import com.witheat.WithEatServer.Service.Utils.CalendarService;
-import com.witheat.WithEatServer.Service.Utils.UserService;
+import com.witheat.WithEatServer.Service.CalendarService;
+import com.witheat.WithEatServer.Service.UserService;
 import com.witheat.WithEatServer.common.BaseErrorResponse;
 import com.witheat.WithEatServer.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
@@ -74,6 +75,32 @@ public class UserController {
                     .status(HttpStatus.OK)
                     .body(new BaseResponse<>(HttpStatus.OK.value(), "일정(목표) 달력", list));
         } catch(BaseException e) {
+            BaseErrorResponse errorResponse = new BaseErrorResponse(e.getCode(), e.getMessage());
+
+            return ResponseEntity
+                    .status(e.getCode())
+                    .body(new BaseResponse<>(e.getCode(), e.getMessage(), null));
+        }
+    }
+
+    //사용자 메인 페이지 몸무게 변경
+    @PutMapping("{userId}/mypage/weight")
+    public ResponseEntity<BaseResponse<UserWeightCreateResponseDto>> updateUserWeight (
+            @PathVariable("userId") Long userId,
+            @RequestBody UserWeightCreateRequestDto userWeightCreateRequestDto){
+        //구현
+        try{
+            //몸무게 받기(업데이트)
+            UserWeightCreateResponseDto userWeightCreateResponseDto
+                    = userService.userWeightCreateResponseDto(userId, userWeightCreateRequestDto);
+
+            //응답처리는 ok로 몸무게가 수정되었습니다로 하기
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new BaseResponse<>(HttpStatus.OK.value(), "몸무게 수정되었습니다.", userWeightCreateResponseDto));
+
+        }catch(BaseException e){
+            //에러
             BaseErrorResponse errorResponse = new BaseErrorResponse(e.getCode(), e.getMessage());
 
             return ResponseEntity
