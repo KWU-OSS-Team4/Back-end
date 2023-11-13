@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AlarmCreateRequestDto {
-    private String alarmName; //alarm_name
-    private int alarmTime; //alarm_time
+    private String user_alarm; //alarm_name
+    private int user_timer; //alarm_time
 
 }
