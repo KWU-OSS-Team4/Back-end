@@ -5,6 +5,7 @@ import com.witheat.WithEatServer.Domain.Dto.request.UserWeightCreateRequestDto;
 import com.witheat.WithEatServer.Domain.Dto.response.CalendarCreateResponseDto;
 import com.witheat.WithEatServer.Domain.Dto.response.CalendarResponseDto;
 import com.witheat.WithEatServer.Domain.Dto.response.UserWeightCreateResponseDto;
+import com.witheat.WithEatServer.Domain.entity.UserWeight;
 import com.witheat.WithEatServer.Exception.BaseException;
 import com.witheat.WithEatServer.Service.CalendarService;
 import com.witheat.WithEatServer.Service.UserService;
@@ -108,4 +109,27 @@ public class UserController {
                     .body(new BaseResponse<>(e.getCode(), e.getMessage(), null));
         }
     }
+
+    //몸무게 체중 변화 그래프
+    @GetMapping("{userId}/mypage/{weightId}")
+    public ResponseEntity<BaseResponse<List<UserWeight>>> weightChangeGraph(
+            @PathVariable("userId") Long userId,
+            @PathVariable("weightId") Long weightId){
+        //구현
+        try {
+            List<UserWeightCreateResponseDto> weights = userService.getWeight(userId,weightId);
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new BaseResponse<>(HttpStatus.OK.value(), null));
+        }catch (BaseException e){
+            BaseErrorResponse errorResponse = new BaseErrorResponse(e.getCode(),e.getMessage());
+
+            return ResponseEntity.
+                    status(e.getCode())
+                    .body(new BaseResponse<>(e.getCode(),e.getMessage(),null));
+        }
+
+    }
+
 }

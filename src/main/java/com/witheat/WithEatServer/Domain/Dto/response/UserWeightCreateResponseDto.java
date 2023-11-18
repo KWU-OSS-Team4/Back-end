@@ -10,9 +10,11 @@ import java.time.LocalDate;
 
 public class UserWeightCreateResponseDto {
     private Long weight_id;
+    private Long user_id;
 
-    public UserWeightCreateResponseDto(Long weight_id)
+    public UserWeightCreateResponseDto(Long userId, Long weight_id)
     {
+        this.user_id = userId;
         this.weight_id  = weight_id;
     }
 }

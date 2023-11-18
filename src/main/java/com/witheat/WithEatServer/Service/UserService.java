@@ -9,6 +9,7 @@ import com.witheat.WithEatServer.Domain.entity.Weight;
 import com.witheat.WithEatServer.Exception.BaseException;
 import com.witheat.WithEatServer.Repository.CalendarRepository;
 import com.witheat.WithEatServer.Repository.UserRepository;
+import com.witheat.WithEatServer.Repository.UserWeightRepository;
 import com.witheat.WithEatServer.Repository.WeightRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -71,6 +72,25 @@ public class UserService {
 
         userRepository.save(user);
 
-        return new UserWeightCreateResponseDto(newWeightEntry.getWeight_id());
+        return new UserWeightCreateResponseDto(user.getUser_id(),newWeightEntry.getWeight_id());
+    }
+
+    private final UserWeightRepository userWeightRepository;
+    public List<UserWeightCreateResponseDto> getWeight(Long userId, Long weightId){
+      //오류 찾기
+       User user = userRepository.findById(userId).orElseThrow(()
+               -> new BaseException(404, "유효하지 않은 유저 ID"));
+
+       Weight weight = weightRepository.findById(weightId).orElseThrow(()
+       -> new BaseException(404, "유효하지 않은 weight ID"));
+
+       List<UserWeight> userWeights = userWeightRepository.findByUserAndWeight(user,weight);
+
+        List<UserWeightCreateResponseDto> weights = userWeights.stream()
+                .map(userWeight -> new UserWeightCreateResponseDto(userWeight.getUser().getUser_id(), userWeight.getUser_weight_id()))
+                .collect(Collectors.toList());
+
+        return weights;
+
     }
 }
