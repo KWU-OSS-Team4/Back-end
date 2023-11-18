@@ -1,10 +1,14 @@
 package com.witheat.WithEatServer.Service;
 
 import com.witheat.WithEatServer.Config.JWT.JwtTokenProvideImpl;
+import com.witheat.WithEatServer.Domain.Dto.request.MemberHeightRequestDto;
+import com.witheat.WithEatServer.Domain.Dto.request.MemberWeightRequestDto;
 import com.witheat.WithEatServer.Domain.Dto.response.CalendarResponseDto;
-import com.witheat.WithEatServer.Domain.entity.Member;
+import com.witheat.WithEatServer.Domain.Dto.response.MemberHeightResponseDto;
+import com.witheat.WithEatServer.Domain.Dto.response.MemberWeightResponseDto;
+import com.witheat.WithEatServer.Domain.entity.*;
 import com.witheat.WithEatServer.Exception.BaseException;
-import com.witheat.WithEatServer.Repository.MemberRepository;
+import com.witheat.WithEatServer.Repository.*;
 import com.witheat.WithEatServer.common.BaseErrorResponse;
 import com.witheat.WithEatServer.common.BaseResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,7 +28,10 @@ import java.util.stream.Collectors;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final JwtTokenProvideImpl jwtTokenProvideImpl;
-
+    private final MemberHeightRepository memberHeightRepository;
+    private final MemberWeightRepository memberWeightRepository;
+    private final HeightRepository heightRepository;
+    private final WeightRepository weightRepository;
 
 //    @Override
     @Transactional
@@ -43,10 +50,9 @@ public class MemberService {
     }
 
 
-
     public List<CalendarResponseDto> confirmCalendar(Long userId) {
         Member member = memberRepository.findById(userId).orElseThrow(()
-                -> new BaseException(404, "유효하지 않은 유저 ID"));
+                -> new BaseException(404, "유효하지 않은 멤버 ID"));
 
         // 여기 getCalendars()로 바꿔야하나
         List<CalendarResponseDto> result = member.getCalendars().stream()
@@ -56,4 +62,49 @@ public class MemberService {
         return result;
     }
 
+    // 사용자 정보(키) 받기
+    public MemberHeightResponseDto receiveMemberHgtInform(Long memberId, MemberHeightRequestDto memberHeightRequestDto) {
+        Member member = memberRepository.findById(memberId).orElseThrow(()
+                ->new BaseException(HttpStatus.NO_CONTENT.value(), "Member not found"));
+
+        Height height = Height.builder()
+                .height(memberHeightRequestDto.getHeight())  // 키 설정
+                .height_date(memberHeightRequestDto.getHeight_date())  // 기록 날짜 설정
+                .build();
+
+        heightRepository.save(height);
+
+        MemberHeight memberHeight = new MemberHeight();
+        memberHeight.setMember(member);
+        memberHeight.setHeight(height);
+        memberHeightRepository.save(memberHeight);
+
+        return MemberHeightResponseDto.builder()
+                .height_id(height.getHeight_id())
+                .build();
+
+    }
+
+    // 사용자 정보(몸무게) 받기
+    public MemberWeightResponseDto receiveMemberWgtInform(Long memberId, MemberWeightRequestDto memberWeightRequestDto) {
+        Member member = memberRepository.findById(memberId).orElseThrow(()
+                ->new BaseException(HttpStatus.NO_CONTENT.value(), "Member not found"));
+
+        Weight weight = Weight.builder()
+                .weight(memberWeightRequestDto.getWeight())  // 몸무게 설정
+                .weight_date(memberWeightRequestDto.getWeight_date())   // 기록 날짜 설정
+                .build();
+
+       weightRepository.save(weight);
+
+        MemberWeight memberWeight = new MemberWeight();
+        memberWeight.setMember(member);
+        memberWeight.setWeight(weight);
+        memberWeightRepository.save(memberWeight);
+
+        return MemberWeightResponseDto.builder()
+                .weight_id(weight.getWeight_id())
+                .build();
+
+    }
 }
