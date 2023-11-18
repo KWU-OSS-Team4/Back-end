@@ -1,37 +1,45 @@
 package com.witheat.WithEatServer.Controller;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import com.witheat.WithEatServer.Domain.Dto.request.CalendarCreateRequestDto;
 import com.witheat.WithEatServer.Domain.Dto.response.CalendarCreateResponseDto;
 import com.witheat.WithEatServer.Domain.Dto.response.CalendarResponseDto;
 import com.witheat.WithEatServer.Exception.BaseException;
-import com.witheat.WithEatServer.Service.Utils.CalendarService;
-import com.witheat.WithEatServer.Service.Utils.UserService;
+import com.witheat.WithEatServer.Service.CalendarService;
+import com.witheat.WithEatServer.Service.MemberService;
 import com.witheat.WithEatServer.common.BaseErrorResponse;
 import com.witheat.WithEatServer.common.BaseResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/member")
+public class MemberController {
 
     private final CalendarService calendarService;
-    private final UserService userService;
+    private final MemberService memberService;
+
+    // 로그아웃 기능
+    @DeleteMapping("/{memberId}/logout")
+    public ResponseEntity logout(HttpServletRequest request) {
+        return memberService.logout(request);
+    }
 
     // 새로운 일정(목표) 추가
-    @PostMapping("/{userId}/calendar")
+    @PostMapping("/{memberId}/calendar")
     public ResponseEntity<BaseResponse<CalendarCreateResponseDto>> makeCalendar (
             @RequestBody CalendarCreateRequestDto calendarCreateRequestDto,
-            @PathVariable("userId") Long userId) {
+            @PathVariable("memberId") Long memberId) {
         try {
             CalendarCreateResponseDto calendarCreateResponseDto
-                    = calendarService.generateCalendar(userId, calendarCreateRequestDto);
+                    = calendarService.generateCalendar(memberId, calendarCreateRequestDto);
 
             return ResponseEntity
                     .status(HttpStatus.OK)
@@ -46,11 +54,11 @@ public class UserController {
     }
 
     // 사용자 목표 삭제
-    @DeleteMapping("{userId}/calendar/{calendarId}")
-    public ResponseEntity<BaseResponse> deleteCalendar(@PathVariable("userId") Long userId,
+    @DeleteMapping("{memberId}/calendar/{calendarId}")
+    public ResponseEntity<BaseResponse> deleteCalendar(@PathVariable("memberId") Long memberId,
                                                        @PathVariable("calendarId") Long calendarId) {
         try {
-            calendarService.deleteCalendar(userId, calendarId);
+            calendarService.deleteCalendar(memberId, calendarId);
 
             return ResponseEntity
                     .status(HttpStatus.OK)
@@ -65,10 +73,10 @@ public class UserController {
     }
 
     // 사용자 일정(목표) 확인
-    @GetMapping("{userId}/calendar/plan")
-    public ResponseEntity<BaseResponse<List<CalendarResponseDto>>> confirmsCalendar(@PathVariable("userId") Long userId) {
+    @GetMapping("{memberId}/calendar/plan")
+    public ResponseEntity<BaseResponse<List<CalendarResponseDto>>> confirmsCalendar(@PathVariable("memberId") Long memberId) {
         try {
-            List<CalendarResponseDto> list = userService.confirmCalendar(userId);
+            List<CalendarResponseDto> list = memberService.confirmCalendar(memberId);
 
             return ResponseEntity
                     .status(HttpStatus.OK)
