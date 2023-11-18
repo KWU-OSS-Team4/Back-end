@@ -11,16 +11,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @NoArgsConstructor
-public class UserWeight {
+public class MemberHeight {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long user_weight_id;
+    private Long member_height_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "weight_id")
-    private Weight weight;
+    @JoinColumn(name = "height_id")
+    private Height height;
 }

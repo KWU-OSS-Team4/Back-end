@@ -27,7 +27,7 @@ public class Calendar extends Time {
     private String feedback;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    public List<UserCalendar> userCalendars = new ArrayList<>();
+    public List<MemberCalendar> memberCalendars = new ArrayList<>();
 
     @Builder
     public Calendar(String calendar_name, LocalDate calendar_date, String feedback) {
