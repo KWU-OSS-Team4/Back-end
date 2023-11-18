@@ -23,4 +23,12 @@ public class MemberHeight {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "height_id")
     private Height height;
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    public void setHeight(Height height) {
+        this.height = height;
+    }
 }

@@ -23,4 +23,12 @@ public class MemberWeight {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "weight_id")
     private Weight weight;
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    public void setWeight(Weight weight) {
+        this.weight = weight;
+    }
 }

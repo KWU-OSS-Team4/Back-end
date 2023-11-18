@@ -28,7 +28,7 @@ public class CalendarService {
     public CalendarCreateResponseDto generateCalendar(Long memberId,
                                                       CalendarCreateRequestDto calendarCreateRequestDto) {
         Member member = memberRepository.findById(memberId).orElseThrow(()
-                ->new BaseException(HttpStatus.NOT_FOUND.value(), "User not found"));
+                ->new BaseException(HttpStatus.NOT_FOUND.value(), "Member not found"));
 
         Calendar calendar = Calendar.builder()
                 .calendar_name(calendarCreateRequestDto.getCalendar_name())  // 목표 이름 설정
@@ -50,7 +50,7 @@ public class CalendarService {
     @Transactional
     public void deleteCalendar(Long memberId, Long calendarId) {
         Member member = memberRepository.findById(memberId).orElseThrow(()
-                -> new BaseException(HttpStatus.NOT_FOUND.value(), "User not found"));
+                -> new BaseException(HttpStatus.NOT_FOUND.value(), "Member not found"));
         Calendar calendar = calendarRepository.findById(calendarId).orElseThrow(()
                 -> new BaseException(HttpStatus.NOT_FOUND.value(), "Calendar not found"));
 
