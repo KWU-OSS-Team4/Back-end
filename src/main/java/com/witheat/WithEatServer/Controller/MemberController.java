@@ -3,10 +3,8 @@ package com.witheat.WithEatServer.Controller;
 import com.witheat.WithEatServer.Domain.Dto.request.CalendarCreateRequestDto;
 import com.witheat.WithEatServer.Domain.Dto.request.MemberHeightRequestDto;
 import com.witheat.WithEatServer.Domain.Dto.request.MemberWeightRequestDto;
-import com.witheat.WithEatServer.Domain.Dto.response.CalendarCreateResponseDto;
-import com.witheat.WithEatServer.Domain.Dto.response.CalendarResponseDto;
-import com.witheat.WithEatServer.Domain.Dto.response.MemberHeightResponseDto;
-import com.witheat.WithEatServer.Domain.Dto.response.MemberWeightResponseDto;
+import com.witheat.WithEatServer.Domain.Dto.request.ProgressRequestDto;
+import com.witheat.WithEatServer.Domain.Dto.response.*;
 import com.witheat.WithEatServer.Exception.BaseException;
 import com.witheat.WithEatServer.Repository.MemberHeightRepository;
 import com.witheat.WithEatServer.Service.CalendarService;
@@ -132,6 +130,27 @@ public class MemberController {
                             "유저 정보(몸무게)가 추가되었습니다", memberWeightResponseDto));
         } catch (BaseException e) {
             BaseErrorResponse errorResponse = new BaseErrorResponse(e.getCode(), e.getMessage());
+            return ResponseEntity
+                    .status(e.getCode())
+                    .body(new BaseResponse<>(e.getCode(), e.getMessage(), null));
+        }
+    }
+
+    // 사용자 진행도 받기
+    @PostMapping("/{memberId}/calendar/progress")
+    public ResponseEntity<BaseResponse<ProgressResponseDto>> receiveProgress(
+            @RequestBody ProgressRequestDto progressRequestDto,
+            @PathVariable("memberId") Long memberId) {
+        try {
+            ProgressResponseDto progressResponseDto
+                    = memberService.receiveMemberProgress(memberId, progressRequestDto);
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new BaseResponse<>(HttpStatus.OK.value(), "사용자로부터 진행도를 받았습니다", progressResponseDto));
+        } catch (BaseException e) {
+            BaseErrorResponse errorResponse = new BaseErrorResponse(e.getCode(), e.getMessage());
+
             return ResponseEntity
                     .status(e.getCode())
                     .body(new BaseResponse<>(e.getCode(), e.getMessage(), null));
