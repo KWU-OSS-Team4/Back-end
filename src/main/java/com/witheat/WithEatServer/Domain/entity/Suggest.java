@@ -20,16 +20,22 @@ public class Suggest {
 
     //아침은 리스트나 class로 받는게 나아보임
     @Column
-    private String breakfast;   // 이걸 list로 받아야하려나
+    private int breakfast;   // 이걸 list로 받아야하려나
 
     @Column
-    private String lunch;
+    private int lunch;
 
     @Column
-    private String dinner;
+    private int dinner;
 
     @Column
-    private String snack;
+    private int snack;
+
+    //현재 엔티티와 다른 엔티티와의 다대일 관계를 맺을 예정
+    //여러개의 추천 식단이 하나의 사용자에 속함
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Builder
     public Suggest(String plan_name)
@@ -38,12 +44,13 @@ public class Suggest {
     }
 
     @Builder
-    public Suggest (String plan_name, String breakfast, String lunch, String dinner,String snack) {
+    public Suggest (String plan_name, int breakfast, int lunch, int dinner, int snack,Member member) {
         this.plan_name = plan_name;
         this.breakfast = breakfast;
         this.lunch = lunch;
         this.dinner = dinner;
         this.snack = snack;
+        this.member = member;
     }
 
 }
