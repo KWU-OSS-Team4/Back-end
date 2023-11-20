@@ -28,9 +28,8 @@ public class Progress extends Time {
 
 
     @Builder
-    public Progress (int progress_per, LocalDate progress_date, Member member) {
+    public Progress(int progress_per, LocalDate progress_date, Member member) {
         this.progress_per = progress_per;
         this.progress_date = progress_date;
-        this.member = member;
     }
 }
