@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -55,16 +56,19 @@ public class Member extends Time {
 //    public List<UserHeight>
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    public List<Height> heights = new ArrayList<>();
+    public List<MemberHeight> memberHeights = new ArrayList<>();    // 바뀜..?
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    public List<Weight> weights = new ArrayList<>();
+    public List<Weight> memberWeights = new ArrayList<>();    // 바뀜...??
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<MemberCalendar> memberCalendars = new ArrayList<>();
 
-    @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL, orphanRemoval = true)
-    public List<Calendar> calendars = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<MemberProgress> memberProgresses = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    public Set<Calendar> calendars;   // public List<Calendar> calendars = new ArrayList<>();
 
     //mappedBy : 연관관계의 주인
     //cascade ~ : 부모 엔티티(Member)의 변경이 자식엔티티에 영향을 미치돌고 함
@@ -107,7 +111,7 @@ public class Member extends Time {
 
     //User과 Weight UserWeight 를 모두 양방향 관계를 가지도록 함
     public void addWeight(Weight weight){
-        weights.add(weight);
+        memberWeights.add(weight);
         weight.setMember(this);
     }
 

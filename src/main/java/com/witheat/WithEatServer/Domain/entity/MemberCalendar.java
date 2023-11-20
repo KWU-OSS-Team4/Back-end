@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Builder
-@AllArgsConstructor
 @Getter
 @NoArgsConstructor
 public class MemberCalendar {

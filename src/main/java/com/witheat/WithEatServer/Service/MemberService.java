@@ -4,10 +4,7 @@ import com.witheat.WithEatServer.Config.JWT.JwtTokenProvideImpl;
 import com.witheat.WithEatServer.Domain.Dto.request.MemberHeightRequestDto;
 import com.witheat.WithEatServer.Domain.Dto.request.MemberWeightRequestDto;
 import com.witheat.WithEatServer.Domain.Dto.request.ProgressRequestDto;
-import com.witheat.WithEatServer.Domain.Dto.response.CalendarResponseDto;
-import com.witheat.WithEatServer.Domain.Dto.response.MemberHeightResponseDto;
-import com.witheat.WithEatServer.Domain.Dto.response.MemberWeightResponseDto;
-import com.witheat.WithEatServer.Domain.Dto.response.ProgressResponseDto;
+import com.witheat.WithEatServer.Domain.Dto.response.*;
 import com.witheat.WithEatServer.Domain.entity.*;
 import com.witheat.WithEatServer.Exception.BaseException;
 import com.witheat.WithEatServer.Repository.*;
@@ -45,6 +42,7 @@ public class MemberService {
     private final HeightRepository heightRepository;
     @Autowired
     private final WeightRepository weightRepository;
+    private final CalendarRepository calendarRepository;
 
 //    @Override
     @Transactional
@@ -62,18 +60,17 @@ public class MemberService {
                 .body(new BaseResponse(HttpStatus.OK.value(), "로그아웃 되었습니다"));
     }
 
-
-    public List<CalendarResponseDto> confirmCalendar(Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(()
-                -> new BaseException(404, "유효하지 않은 멤버 ID"));
-
-        // 여기 getCalendars()로 바꿔야하나
-        List<CalendarResponseDto> result = member.getCalendars().stream()
-                .map(calendar -> new CalendarResponseDto(calendar.getCalender_id(), calendar.getCalendar_name(),
-                        calendar.getCalendar_date())).collect(Collectors.toList());
-
-        return result;
-    }
+    // 사용자 일정 확인 (월별)
+//    public CalendarResponseDto confirmCalendar(Long memberId) {
+//        Member member = memberRepository.findById(memberId).orElseThrow(()
+//                -> new BaseException(404, "유효하지 않은 멤버 ID"));
+//
+//        // 여기 getCalendars()로 바꿔야하나
+//        List<CalendarResponseDto> result = new CalendarResponseDto(calendar.getCalender_id(), calendar.getCalendar_name(),
+//                        calendar.getCalendar_date());
+//
+//        return result;
+//    }
 
     // 사용자 정보(키) 받기
     public MemberHeightResponseDto receiveMemberHgtInform(Long memberId, MemberHeightRequestDto memberHeightRequestDto) {
@@ -150,8 +147,8 @@ public class MemberService {
         int newWeight = memberWeightRequestDto.getWeight();
 
         //최신 몸무게 받아와야함
-        Weight latestWeight = member.getWeights().stream()
-                .max(Comparator.comparing(Weight::getWeight_date))
+        Weight latestWeight = member.getMemberWeights().stream()
+                .max(Comparator.comparing(weight -> weight.getWeight_date()))
                 .orElse(null);
 
         //새로운 정보 저장
@@ -166,7 +163,7 @@ public class MemberService {
             latestWeight.setWeight_date(LocalDate.now());
         }else{
             //최신 몸무게 정보가 없으면 새로운 몸무게 정보를 생성
-            member.getWeights().add(newWeightEntry);
+            member.getMemberWeights().add(newWeightEntry);
             newWeightEntry.setMember(member);
             weightRepository.save(newWeightEntry);
         }

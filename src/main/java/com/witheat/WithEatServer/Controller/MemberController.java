@@ -76,17 +76,53 @@ public class MemberController {
     }
 
     // 사용자 일정(목표) 확인
-    @GetMapping("{memberId}/calendar/plan")
-    public ResponseEntity<BaseResponse<List<CalendarResponseDto>>> confirmsCalendar(@PathVariable("memberId") Long memberId) {
-        try {
-            List<CalendarResponseDto> list = memberService.confirmCalendar(memberId);
+//    @GetMapping("{memberId}/calendar/plan")
+//    public ResponseEntity<BaseResponse<List<CalendarResponseDto>>> confirmsCalendar(@PathVariable("memberId") Long memberId) {
+//        try {
+//            List<CalendarResponseDto> list = memberService.confirmCalendar(memberId);
+//
+//            return ResponseEntity
+//                    .status(HttpStatus.OK)
+//                    .body(new BaseResponse<>(HttpStatus.OK.value(), "일정(목표) 달력", list));
+//        } catch(BaseException e) {
+//            BaseErrorResponse errorResponse = new BaseErrorResponse(e.getCode(), e.getMessage());
+//
+//            return ResponseEntity
+//                    .status(e.getCode())
+//                    .body(new BaseResponse<>(e.getCode(), e.getMessage(), null));
+//        }
+//    }
 
+    // 사용자 일정(목표) 확인 - 날짜별 일정 확인
+    @PostMapping("/{memberId}/calendar/plan")
+    public ResponseEntity<BaseResponse<List<FilterCalendars>>> scheduleByDate(
+            @PathVariable("memberId") Long memberId,
+            @RequestBody FilteringScheduleRequestDto filteringScheduleRequestDto) {
+        try {
+            List<FilterCalendars> filterCalendars = calendarService.findCalendars(memberId, filteringScheduleRequestDto);
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(new BaseResponse<>(HttpStatus.OK.value(), "일정(목표) 달력", list));
-        } catch(BaseException e) {
+                    .body(new BaseResponse<>(HttpStatus.OK.value(), "사용자 일정(목표) 확인", filterCalendars));
+        } catch (BaseException e) {
             BaseErrorResponse errorResponse = new BaseErrorResponse(e.getCode(), e.getMessage());
+            return ResponseEntity
+                    .status(e.getCode())
+                    .body(new BaseResponse<>(e.getCode(), e.getMessage(), null));
+        }
+    }
 
+    // 월별 날짜 리스트 반환
+    @PostMapping("/{memberId}/date_list")
+    public ResponseEntity<BaseResponse<List<MonthlyResponseDto>>> searchDateList(
+            @PathVariable("memberId") Long memberId, @RequestBody MonthlyRequestDto monthlyRequestDto) {
+
+        List<MonthlyResponseDto> monthlyResponseDtos = calendarService.getDateList(memberId, monthlyRequestDto);
+        try {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new BaseResponse<>(HttpStatus.OK.value(), "날짜 리스트 가져옴", monthlyResponseDtos));
+        } catch (BaseException e) {
+            BaseErrorResponse errorResponse = new BaseErrorResponse(e.getCode(), e.getMessage());
             return ResponseEntity
                     .status(e.getCode())
                     .body(new BaseResponse<>(e.getCode(), e.getMessage(), null));
@@ -94,7 +130,7 @@ public class MemberController {
     }
 
     // 유저 정보(키) 받기
-    @PostMapping("{memberId}/information-height")
+    @PostMapping("{memberId}/information_height")
     public ResponseEntity<BaseResponse<MemberHeightResponseDto>> receiveHeightInfo(
             @RequestBody MemberHeightRequestDto memberHeightRequestDto,
             @PathVariable("memberId") Long memberId) {
@@ -115,7 +151,7 @@ public class MemberController {
     }
 
     // 유저 정보(몸무게) 받기
-    @PostMapping("{memberId}/information-weight")
+    @PostMapping("{memberId}/information_weight")
     public ResponseEntity<BaseResponse<MemberWeightResponseDto>> receiveWeightInfo(
             @RequestBody MemberWeightRequestDto memberWeightRequestDto,
             @PathVariable("memberId") Long memberId) {

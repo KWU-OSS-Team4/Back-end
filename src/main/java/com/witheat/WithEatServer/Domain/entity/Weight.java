@@ -50,6 +50,6 @@ public class Weight extends Time {
     public void setMember(Member member)
     {
         this.member =member;
-        member.getWeights().add(this);
+        member.getMemberWeights().add(this);
     }
 }

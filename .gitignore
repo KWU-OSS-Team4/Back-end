@@ -42,5 +42,5 @@ application-jwt.properties
 ### redis 관련 정보 ###
 application-redis.properties
 
-### DB 관련 정보 ###
+### db 관련 정보 ###
 application-db.properties

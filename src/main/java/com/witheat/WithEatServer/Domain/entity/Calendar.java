@@ -26,8 +26,13 @@ public class Calendar extends Time {
     @Column
     private String feedback;
 
-    @OneToMany(mappedBy = "calender", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<MemberCalendar> memberCalendars = new ArrayList<>();
+
+    // 이게 맞나
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Builder
     public Calendar(String calendar_name, LocalDate calendar_date, String feedback) {
