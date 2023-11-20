@@ -39,6 +39,9 @@ public class Member extends Time {
     @Column(nullable = false)
     private String plan_name;
 
+    @Column(nullable = false)
+    private int requiredCalories;
+
     // height, weight는 OneToMany
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 //    public List<UserHeight>
@@ -54,6 +57,12 @@ public class Member extends Time {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     public Set<Calendar> calendars;   // public List<Calendar> calendars = new ArrayList<>();
+
+    //mappedBy : 연관관계의 주인
+    //cascade ~ : 부모 엔티티(Member)의 변경이 자식엔티티에 영향을 미치돌고 함
+    //orph ~ : 부모 엔티티에서 제거된 자식 엔티티도 DB에서 삭제되도록 함
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<Suggest> suggests = new ArrayList<>();
 
     @Builder
     public Member(String name, String email, String password, boolean agreement, boolean gender, String plan_name) {
@@ -87,4 +96,11 @@ public class Member extends Time {
             throw new BadRequestException("비밀번호가 일치하지 않습니다.");
         }
     }
+
+    //User과 Weight UserWeight 를 모두 양방향 관계를 가지도록 함
+    /*public void addWeight(Weight weight){
+        memberWeights.add(weight);
+        weight.setMember(this);
+    }*/
+
 }
