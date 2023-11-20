@@ -25,7 +25,7 @@ public class Height extends Time{
     // @OneToMany 필요
 
     @Builder
-    public Height(int height, LocalDate height_date) {
+    public Height(Integer height, LocalDate height_date) {
         this.height = height;
         this.height_date = height_date;
     }

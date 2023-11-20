@@ -3,18 +3,12 @@ package com.witheat.WithEatServer.Service;
 import com.witheat.WithEatServer.Domain.Dto.request.CalendarCreateRequestDto;
 import com.witheat.WithEatServer.Domain.Dto.response.CalendarCreateResponseDto;
 import com.witheat.WithEatServer.Domain.entity.Calendar;
-import com.witheat.WithEatServer.Domain.entity.User;
-import com.witheat.WithEatServer.Domain.entity.UserCalendar;
-import com.witheat.WithEatServer.Domain.entity.Weight;
+import com.witheat.WithEatServer.Domain.entity.Member;
+import com.witheat.WithEatServer.Domain.entity.MemberCalendar;
 import com.witheat.WithEatServer.Exception.BaseException;
 import com.witheat.WithEatServer.Repository.CalendarRepository;
-import com.witheat.WithEatServer.Repository.UserCalendarRepository;
-import com.witheat.WithEatServer.Repository.UserRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import com.witheat.WithEatServer.Repository.MemberCalendarRepository;
+import com.witheat.WithEatServer.Repository.MemberRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,17 +18,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class CalendarService {
 
     private final CalendarRepository calendarRepository;
-    private final UserRepository userRepository;
-    private final UserCalendarRepository userCalendarRepository;
-    public CalendarService(CalendarRepository calendarRepository, UserRepository userRepository, UserCalendarRepository userCalendarRepository){
+    private final MemberRepository memberRepository;
+    private final MemberCalendarRepository memberCalendarRepository;
+    public CalendarService(CalendarRepository calendarRepository, MemberRepository memberRepository, MemberCalendarRepository memberCalendarRepository){
         this.calendarRepository = calendarRepository;
-        this.userRepository = userRepository;
-        this.userCalendarRepository = userCalendarRepository;
+        this.memberRepository = memberRepository;
+        this.memberCalendarRepository = memberCalendarRepository;
     }
-    public CalendarCreateResponseDto generateCalendar(Long userId,
+    public CalendarCreateResponseDto generateCalendar(Long memberId,
                                                       CalendarCreateRequestDto calendarCreateRequestDto) {
-        User user = userRepository.findById(userId).orElseThrow(()
-                ->new BaseException(HttpStatus.NOT_FOUND.value(), "User not found"));
+        Member member = memberRepository.findById(memberId).orElseThrow(()
+                ->new BaseException(HttpStatus.NOT_FOUND.value(), "Member not found"));
 
         Calendar calendar = Calendar.builder()
                 .calendar_name(calendarCreateRequestDto.getCalendar_name())  // 목표 이름 설정
@@ -43,10 +37,10 @@ public class CalendarService {
 
         calendarRepository.save(calendar);
 
-        UserCalendar userCalendar = new UserCalendar();
-        userCalendar.setUser(user);
-        userCalendar.setCalendar(calendar);
-        userCalendarRepository.save(userCalendar);
+        MemberCalendar memberCalendar = new MemberCalendar();
+        memberCalendar.setMember(member);
+        memberCalendar.setCalendar(calendar);
+        memberCalendarRepository.save(memberCalendar);
 
         return CalendarCreateResponseDto.builder()
                 .calendarId(calendar.getCalender_id())
@@ -54,9 +48,9 @@ public class CalendarService {
     }
 
     @Transactional
-    public void deleteCalendar(Long userId, Long calendarId) {
-        User user = userRepository.findById(userId).orElseThrow(()
-                -> new BaseException(HttpStatus.NOT_FOUND.value(), "User not found"));
+    public void deleteCalendar(Long memberId, Long calendarId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(()
+                -> new BaseException(HttpStatus.NOT_FOUND.value(), "Member not found"));
         Calendar calendar = calendarRepository.findById(calendarId).orElseThrow(()
                 -> new BaseException(HttpStatus.NOT_FOUND.value(), "Calendar not found"));
 

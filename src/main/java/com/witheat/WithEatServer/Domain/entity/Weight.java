@@ -27,11 +27,11 @@ public class Weight extends Time {
 
     //user가 weight 를 관리하게 하기
     @OneToMany(mappedBy = "weight", cascade = CascadeType.ALL, orphanRemoval = true) //-> user랑 weight 엮어서 만들기
-    private final List<UserWeight> userWeights = new ArrayList<>();
+    private final List<MemberWeight> memberWeights = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Builder
     public Weight(int weight, LocalDate weight_date) {
@@ -47,9 +47,9 @@ public class Weight extends Time {
         this.weight_date = weight_date;
     }
 
-    public void setUser(User user)
+    public void setMember(Member member)
     {
-        this.user =user;
-        user.getWeights().add(this);
+        this.member =member;
+        member.getWeights().add(this);
     }
 }

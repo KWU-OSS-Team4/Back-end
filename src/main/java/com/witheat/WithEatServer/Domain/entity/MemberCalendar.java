@@ -11,16 +11,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @NoArgsConstructor
-public class UserWeight {
+public class MemberCalendar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long user_weight_id;
+    private Long member_calendar_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "weight_id")
-    private Weight weight;
+    @JoinColumn(name = "calendar_id")
+    private Calendar calendar;
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    public void setCalendar(Calendar calendar) {
+        this.calendar = calendar;
+    }
 }

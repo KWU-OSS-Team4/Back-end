@@ -20,12 +20,17 @@ public class Progress extends Time {
     private int progress_per;
 
     @Column
-    private LocalDate progress_Date;
+    private LocalDate progress_date;
 
-    // @OneToMany ...???
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+
     @Builder
-    public Progress (int progress_per, LocalDate progress_Date) {
+    public Progress (int progress_per, LocalDate progress_date, Member member) {
         this.progress_per = progress_per;
-        this.progress_Date = progress_Date;
+        this.progress_date = progress_date;
+        this.member = member;
     }
 }

@@ -11,24 +11,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @NoArgsConstructor
-public class UserCalendar {
+public class MemberHeight {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long user_calendar_id;
+    private Long member_height_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "calendar_id")
-    private Calendar calendar;
+    @JoinColumn(name = "height_id")
+    private Height height;
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
-    public void setCalendar(Calendar calendar) {
-        this.calendar = calendar;
+    public void setHeight(Height height) {
+        this.height = height;
     }
 }
