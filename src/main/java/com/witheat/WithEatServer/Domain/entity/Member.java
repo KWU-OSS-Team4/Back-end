@@ -53,9 +53,6 @@ public class Member extends Time {
     public List<MemberCalendar> memberCalendars = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    public List<MemberProgress> memberProgresses = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     public Set<Calendar> calendars;   // public List<Calendar> calendars = new ArrayList<>();
 
     @Builder

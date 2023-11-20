@@ -3,7 +3,6 @@ package com.witheat.WithEatServer.Service;
 import com.witheat.WithEatServer.Config.JWT.JwtTokenProvideImpl;
 import com.witheat.WithEatServer.Domain.Dto.request.MemberHeightRequestDto;
 import com.witheat.WithEatServer.Domain.Dto.request.MemberWeightRequestDto;
-import com.witheat.WithEatServer.Domain.Dto.request.ProgressRequestDto;
 import com.witheat.WithEatServer.Domain.Dto.response.*;
 import com.witheat.WithEatServer.Domain.entity.*;
 import com.witheat.WithEatServer.Exception.BaseException;
@@ -16,9 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -106,34 +102,4 @@ public class MemberService {
                 .build();
 
     }
-
-    // 사용자 진행도 받기
-    public ProgressResponseDto receiveMemberProgress(Long memberId, ProgressRequestDto progressRequestDto) {
-        // 요청으로부터 사용자 진행도 가져오기
-        int progress_per = progressRequestDto.getProgress_per();
-
-        Member member = memberRepository.findById(memberId).orElseThrow(()
-                ->new BaseException(HttpStatus.NO_CONTENT.value(), "Member not found"));
-
-        Progress progress = Progress.builder()
-                .progress_per(progressRequestDto.getProgress_per())   // 진행도 설정
-                .progress_date(progressRequestDto.getProgress_date())   // 기록 날짜 설정
-                .member(member)  // 진행도와 멤버 연결
-                .build();
-
-        memberRepository.save(member);
-
-        ProgressResponseDto progressResponseDto = new ProgressResponseDto(progress.getProgress_id());
-        return progressResponseDto;
-    }
-
-    // 캘린더에 피드백 표시
-//    public List<ViewFeedbackResponseDto> CalendarFeedback(Long memberId) {
-//        Member member = memberRepository.findById(memberId).orElseThrow(()
-//                ->new BaseException(404, "유효하지 않은 멤버 아이디"));
-//
-//        List<ViewFeedbackResponseDto> result = member.getMemberProgresses()
-//
-//        return result;
-//    }
 }
