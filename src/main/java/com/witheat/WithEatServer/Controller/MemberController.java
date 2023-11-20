@@ -171,30 +171,6 @@ public class MemberController {
         }
     }
 
-    // 사용자 진행도 받기
-    @PostMapping("/{memberId}/calendar/progress")
-    public ResponseEntity<BaseResponse<ProgressResponseDto>> receiveProgress(
-            @RequestBody ProgressRequestDto progressRequestDto,
-            @PathVariable("memberId") Long memberId) {
-        try {
-            ProgressResponseDto progressResponseDto
-                    = memberService.receiveMemberProgress(memberId, progressRequestDto);
-
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(new BaseResponse<>(HttpStatus.OK.value(), "사용자로부터 진행도를 받았습니다", progressResponseDto));
-        } catch (BaseException e) {
-            BaseErrorResponse errorResponse = new BaseErrorResponse(e.getCode(), e.getMessage());
-
-            return ResponseEntity
-                    .status(e.getCode())
-                    .body(new BaseResponse<>(e.getCode(), e.getMessage(), null));
-        }
-    }
-
-
-    // 여기부터 Membercontroller로 옮기기 ********************
-
     //사용자 메인 페이지 몸무게 변경
     @GetMapping("{memberId}/mypage/weight")
     public ResponseEntity<BaseResponse<MemberWeightResponseDto>> updateMemberWeight (
