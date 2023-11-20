@@ -42,10 +42,16 @@ public class Member extends Time {
     @Column(nullable = false)
     private int requiredCalories;
 
-    // height, weight는 OneToMany
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    public List<UserHeight>
+    //최신 키와 몸무게를 위해 설정
 
+  /*  @OneToOne(mappedBy = "member", cascade =  CascadeType.ALL,orphanRemoval = true)
+    @OrderBy("height_date DESC")
+    private Height latestHeight;
+
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("weight_date DESC")
+    private Weight latestWeight;
+*/
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<MemberHeight> memberHeights = new ArrayList<>();    // 바뀜..?
 

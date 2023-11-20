@@ -63,4 +63,7 @@ public class Suggest {
     }
 
     //칼로리 계산을 위한 메서드
+    public void calculateKcal(int carbohydrate, int protein, int fat){
+
+    }
 }
