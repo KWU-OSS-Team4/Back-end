@@ -2,6 +2,7 @@ package com.witheat.WithEatServer.Controller;
 
 import com.witheat.WithEatServer.Domain.Dto.request.*;
 import com.witheat.WithEatServer.Domain.Dto.response.*;
+import com.witheat.WithEatServer.Domain.entity.MemberWeight;
 import com.witheat.WithEatServer.Exception.BaseException;
 import com.witheat.WithEatServer.Repository.MemberHeightRepository;
 import com.witheat.WithEatServer.Service.CalendarService;
@@ -11,6 +12,7 @@ import com.witheat.WithEatServer.common.BaseResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -190,22 +192,53 @@ public class MemberController {
         }
     }
 
-    // 캘린더에 피드백 표시
-//    @GetMapping("/{memberId}/calendar/feedback")
-//    public ResponseEntity<BaseResponse<List<ViewFeedbackResponseDto>>> stateFeedback(
-//            @PathVariable("memberId") Long memberId) {
-//        try {
-//            List<ViewFeedbackResponseDto> list = memberService.CalendarFeedback(memberId);
-//
-//            return ResponseEntity
-//                    .status(HttpStatus.OK)
-//                    .body(new BaseResponse<>(HttpStatus.OK.value(), "피드백 표시", list));
-//        } catch (BaseException e) {
-//            BaseErrorResponse errorResponse = new BaseErrorResponse(e.getCode(), e.getMessage());
-//
-//            return ResponseEntity
-//                    .status(e.getCode())
-//                    .body(new BaseResponse<>(e.getCode(), e.getMessage()));
-//        }
-//    }
+
+    // 여기부터 Membercontroller로 옮기기 ********************
+
+    //사용자 메인 페이지 몸무게 변경
+    @GetMapping("{memberId}/mypage/weight")
+    public ResponseEntity<BaseResponse<MemberWeightResponseDto>> updateMemberWeight (
+            @PathVariable("memberId") Long memberId,
+            @RequestBody MemberWeightRequestDto memberWeightRequestDto){
+        //구현
+        try{
+            //몸무게 받기(업데이트)
+            memberService.memberWeightResponseDto(memberId, memberWeightRequestDto);
+
+            //응답처리는 ok로 몸무게가 수정되었습니다로 하기
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new BaseResponse<>(HttpStatus.OK.value(), "몸무게 수정되었습니다.", null));
+
+        }catch(BaseException e){
+            //에러
+            BaseErrorResponse errorResponse = new BaseErrorResponse(e.getCode(), e.getMessage());
+
+            return ResponseEntity
+                    .status(e.getCode())
+                    .body(new BaseResponse<>(e.getCode(), e.getMessage(), null));
+        }
+    }
+
+    //몸무게 체중 변화 그래프
+    @GetMapping("{memberId}/mypage/{weightId}")
+    public ResponseEntity<BaseResponse<List<MemberWeightResponseDto>>> weightChangeGraph(
+            @PathVariable("memberId") Long memberId,
+            @PathVariable("weightId") Long weightId){
+        //구현
+        try {
+            List<MemberWeightResponseDto> weights = memberService.getWeight(memberId, weightId);
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new BaseResponse<>(HttpStatus.OK.value(), null));
+        }catch (BaseException e){
+            BaseErrorResponse errorResponse = new BaseErrorResponse(e.getCode(),e.getMessage());
+
+            return ResponseEntity.
+                    status(e.getCode())
+                    .body(new BaseResponse<>(e.getCode(),e.getMessage(),null));
+        }
+
+    }
 }

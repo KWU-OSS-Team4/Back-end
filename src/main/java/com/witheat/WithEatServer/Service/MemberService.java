@@ -8,15 +8,21 @@ import com.witheat.WithEatServer.Domain.Dto.response.*;
 import com.witheat.WithEatServer.Domain.entity.*;
 import com.witheat.WithEatServer.Exception.BaseException;
 import com.witheat.WithEatServer.Repository.*;
+import com.witheat.WithEatServer.WithEatServerApplication;
 import com.witheat.WithEatServer.common.BaseErrorResponse;
 import com.witheat.WithEatServer.common.BaseResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -125,15 +131,47 @@ public class MemberService {
 
         ProgressResponseDto progressResponseDto = new ProgressResponseDto(progress.getProgress_id());
         return progressResponseDto;
+
     }
 
-    // 캘린더에 피드백 표시
-//    public List<ViewFeedbackResponseDto> CalendarFeedback(Long memberId) {
-//        Member member = memberRepository.findById(memberId).orElseThrow(()
-//                ->new BaseException(404, "유효하지 않은 멤버 아이디"));
-//
-//        List<ViewFeedbackResponseDto> result = member.getMemberProgresses()
-//
-//        return result;
-//    }
+    //사용자 체중 업데이트
+    public void memberWeightResponseDto(Long memberId, MemberWeightRequestDto memberWeightRequestDto){
+        //사용자 식별을 위해 Id 사용하여 사용자 찾기
+        Member member = memberRepository.findById(memberId).orElseThrow(()
+                -> new BaseException(404, "유효하지 않은 유저 ID"));
+        int newWeight = memberWeightRequestDto.getWeight();
+
+        //최신 몸무게를 저장
+        //새로운 Weight 엔티티 생성(해당 엔티티에 몸무게 정보가 있기 때문)
+        Weight weight = new Weight();
+        weight.setWeight(newWeight);
+        weight.setWeight_date(LocalDate.now());
+
+        //Member와 Weight를 연결해줄 memberWeight를 생성 및 초기화
+        MemberWeight memberWeight = new MemberWeight();
+        memberWeight.setMember(member);
+        memberWeight.setWeight(weight);
+
+        //MemberRepository에 저장하면서 자동으로 weight랑 member에 저장되게 끔 함
+        //이는 일대다 관계를 다 엮어놔서 가능
+        memberWeightRepository.save(memberWeight);
+    }
+
+    public List<MemberWeightResponseDto> getWeight(Long memberId, Long weightId){
+        //오류 찾기
+        Member member = memberRepository.findById(memberId).orElseThrow(()
+                -> new BaseException(404, "유효하지 않은 유저 ID"));
+
+        Weight weight = weightRepository.findById(weightId).orElseThrow(()
+                -> new BaseException(404, "유효하지 않은 weight ID"));
+
+        List<MemberWeight> memberWeights = memberWeightRepository.findByMemberAndWeight(member,weight);
+
+        List<MemberWeightResponseDto> weights = memberWeights.stream()
+                .map(memberWeight -> new MemberWeightResponseDto(memberWeight.getMember().getMember_id(), memberWeight.getMember_weight_id()))
+                .collect(Collectors.toList());
+
+        return weights;
+
+    }
 }
