@@ -47,9 +47,11 @@ public class Weight extends Time {
         this.weight_date = weight_date;
     }
 
+    /*
     public void setMember(Member member)
     {
         this.member =member;
         member.getMemberWeights().add(this);
     }
+     */
 }

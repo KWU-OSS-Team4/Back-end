@@ -42,15 +42,6 @@ public class Member extends Time {
     @Column(nullable = false)
     private int requiredCalories;
 
-    @Column(nullable = false)
-    private int carbohydrate;
-
-    @Column(nullable = false)
-    private int protein;
-
-    @Column(nullable = false)
-    private int fat;
-
     // height, weight는 OneToMany
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 //    public List<UserHeight>
@@ -59,7 +50,7 @@ public class Member extends Time {
     public List<MemberHeight> memberHeights = new ArrayList<>();    // 바뀜..?
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    public List<Weight> memberWeights = new ArrayList<>();    // 바뀜...??
+    public List<MemberWeight> memberWeights = new ArrayList<>();    // 바뀜...??
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<MemberCalendar> memberCalendars = new ArrayList<>();
@@ -110,9 +101,9 @@ public class Member extends Time {
     }
 
     //User과 Weight UserWeight 를 모두 양방향 관계를 가지도록 함
-    public void addWeight(Weight weight){
+    /*public void addWeight(Weight weight){
         memberWeights.add(weight);
         weight.setMember(this);
-    }
+    }*/
 
 }

@@ -8,6 +8,7 @@ import com.witheat.WithEatServer.Domain.Dto.response.*;
 import com.witheat.WithEatServer.Domain.entity.*;
 import com.witheat.WithEatServer.Exception.BaseException;
 import com.witheat.WithEatServer.Repository.*;
+import com.witheat.WithEatServer.WithEatServerApplication;
 import com.witheat.WithEatServer.common.BaseErrorResponse;
 import com.witheat.WithEatServer.common.BaseResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,17 +31,11 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class MemberService {
-    @Autowired
     private final MemberRepository memberRepository;
-    @Autowired
     private final JwtTokenProvideImpl jwtTokenProvideImpl;
-    @Autowired
     private final MemberHeightRepository memberHeightRepository;
-    @Autowired
     private final MemberWeightRepository memberWeightRepository;
-    @Autowired
     private final HeightRepository heightRepository;
-    @Autowired
     private final WeightRepository weightRepository;
     private final CalendarRepository calendarRepository;
 
@@ -140,39 +135,26 @@ public class MemberService {
     }
 
     //사용자 체중 업데이트
-    public MemberWeightResponseDto memberWeightResponseDto(Long memberId, MemberWeightRequestDto memberWeightRequestDto){
+    public void memberWeightResponseDto(Long memberId, MemberWeightRequestDto memberWeightRequestDto){
         //사용자 식별을 위해 Id 사용하여 사용자 찾기
         Member member = memberRepository.findById(memberId).orElseThrow(()
                 -> new BaseException(404, "유효하지 않은 유저 ID"));
         int newWeight = memberWeightRequestDto.getWeight();
 
-        //최신 몸무게 받아와야함
-        Weight latestWeight = member.getMemberWeights().stream()
-                .max(Comparator.comparing(weight -> weight.getWeight_date()))
-                .orElse(null);
+        //최신 몸무게를 저장
+        //새로운 Weight 엔티티 생성(해당 엔티티에 몸무게 정보가 있기 때문)
+        Weight weight = new Weight();
+        weight.setWeight(newWeight);
+        weight.setWeight_date(LocalDate.now());
 
-        //새로운 정보 저장
-        Weight newWeightEntry = Weight.builder()
-                .weight(newWeight)
-                .weight_date(LocalDate.now())
-                .build();
+        //Member와 Weight를 연결해줄 memberWeight를 생성 및 초기화
+        MemberWeight memberWeight = new MemberWeight();
+        memberWeight.setMember(member);
+        memberWeight.setWeight(weight);
 
-        //최신 몸무게 정보를 업데이트
-        if(latestWeight != null){
-            latestWeight.setWeight(newWeight);
-            latestWeight.setWeight_date(LocalDate.now());
-        }else{
-            //최신 몸무게 정보가 없으면 새로운 몸무게 정보를 생성
-            member.getMemberWeights().add(newWeightEntry);
-            newWeightEntry.setMember(member);
-            weightRepository.save(newWeightEntry);
-        }
-
-        memberRepository.save(member);
-        //weightRepository.save(latestWeight);
-
-        MemberWeightResponseDto memberWeightResponseDto = new MemberWeightResponseDto(member.getMember_id(), newWeightEntry.getWeight_id());
-        return memberWeightResponseDto;
+        //MemberRepository에 저장하면서 자동으로 weight랑 member에 저장되게 끔 함
+        //이는 일대다 관계를 다 엮어놔서 가능
+        memberWeightRepository.save(memberWeight);
     }
 
     public List<MemberWeightResponseDto> getWeight(Long memberId, Long weightId){

@@ -203,13 +203,12 @@ public class MemberController {
         //구현
         try{
             //몸무게 받기(업데이트)
-            MemberWeightResponseDto memberWeightResponseDto
-                    = memberService.memberWeightResponseDto(memberId, memberWeightRequestDto);
+            memberService.memberWeightResponseDto(memberId, memberWeightRequestDto);
 
             //응답처리는 ok로 몸무게가 수정되었습니다로 하기
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(new BaseResponse<>(HttpStatus.OK.value(), "몸무게 수정되었습니다.", memberWeightResponseDto));
+                    .body(new BaseResponse<>(HttpStatus.OK.value(), "몸무게 수정되었습니다.", null));
 
         }catch(BaseException e){
             //에러

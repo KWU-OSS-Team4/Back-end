@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -22,7 +24,14 @@ public class Height extends Time{
     @Column (nullable = false)
     private LocalDate height_date;
 
-    // @OneToMany 필요
+    //Member과의 관계
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    //Height 관계
+    @OneToMany(mappedBy = "height", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<MemberHeight> memberHeights = new ArrayList<>();
 
     @Builder
     public Height(Integer height, LocalDate height_date) {

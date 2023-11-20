@@ -9,9 +9,12 @@ package com.witheat.WithEatServer.Repository;
 
         import java.util.Optional;
 
-@Repository
-@EnableJpaRepositories
+/*@Repository
 public interface HeightRepository extends JpaRepository<Height, Long> {
         //칼로리 계산하기 위해 최신 정보 불러오기
-        Optional<Height> findTopByMemberOrderByHeight_dateDesc(Member member);
+        Optional<Height> findTopByMemberOrderByHeightDateDesc(Member member);
+}*/
+@Repository
+public interface HeightRepository extends JpaRepository<Height, Long> {
+        //Optional<Height> findTopByMemberOrderByHeightDataDesc(Member member);
 }

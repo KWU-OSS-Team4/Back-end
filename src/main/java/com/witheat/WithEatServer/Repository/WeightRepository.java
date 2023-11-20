@@ -9,8 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-@EnableJpaRepositories
 public interface WeightRepository extends JpaRepository<Weight, Long> {
     //칼로리 계산하기 위해 최신 정보 불러오기
-    Optional<Weight> findTopByMemberOrderByWeight_dateDesc(Member member);
+    //Optional<Weight> findTopByMemberOrderByWeight_dateDesc(Member member);
 }

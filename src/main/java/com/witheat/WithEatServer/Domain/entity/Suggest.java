@@ -16,7 +16,16 @@ public class Suggest {
     private Long suggest_id;
 
     @Column(nullable = false)
-    private String plan_name; //유지 감량 등등
+    private String plan_name; //유지 감량 등
+
+    @Column(nullable = false)
+    private int carbohydrate;
+
+    @Column(nullable = false)
+    private int protein;
+
+    @Column(nullable = false)
+    private int fat;
 
     //아침은 리스트나 class로 받는게 나아보임
     @Column
@@ -53,4 +62,5 @@ public class Suggest {
         this.member = member;
     }
 
+    //칼로리 계산을 위한 메서드
 }
