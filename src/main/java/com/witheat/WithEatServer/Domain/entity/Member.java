@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -43,16 +44,19 @@ public class Member extends Time {
 //    public List<UserHeight>
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    public List<Height> heights = new ArrayList<>();
+    public List<MemberHeight> memberHeights = new ArrayList<>();    // 바뀜..?
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    public List<Weight> weights = new ArrayList<>();
+    public List<MemberWeight> memberWeights = new ArrayList<>();    // 바뀜...??
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<MemberCalendar> memberCalendars = new ArrayList<>();
 
-    @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL, orphanRemoval = true)
-    public List<Calendar> calendars = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<MemberProgress> memberProgresses = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    public Set<Calendar> calendars;   // public List<Calendar> calendars = new ArrayList<>();
 
     @Builder
     public Member(String name, String email, String password, boolean agreement, boolean gender, String plan_name) {

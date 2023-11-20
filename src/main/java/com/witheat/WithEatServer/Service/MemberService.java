@@ -4,10 +4,7 @@ import com.witheat.WithEatServer.Config.JWT.JwtTokenProvideImpl;
 import com.witheat.WithEatServer.Domain.Dto.request.MemberHeightRequestDto;
 import com.witheat.WithEatServer.Domain.Dto.request.MemberWeightRequestDto;
 import com.witheat.WithEatServer.Domain.Dto.request.ProgressRequestDto;
-import com.witheat.WithEatServer.Domain.Dto.response.CalendarResponseDto;
-import com.witheat.WithEatServer.Domain.Dto.response.MemberHeightResponseDto;
-import com.witheat.WithEatServer.Domain.Dto.response.MemberWeightResponseDto;
-import com.witheat.WithEatServer.Domain.Dto.response.ProgressResponseDto;
+import com.witheat.WithEatServer.Domain.Dto.response.*;
 import com.witheat.WithEatServer.Domain.entity.*;
 import com.witheat.WithEatServer.Exception.BaseException;
 import com.witheat.WithEatServer.Repository.*;
@@ -34,6 +31,7 @@ public class MemberService {
     private final MemberWeightRepository memberWeightRepository;
     private final HeightRepository heightRepository;
     private final WeightRepository weightRepository;
+    private final CalendarRepository calendarRepository;
 
 //    @Override
     @Transactional
@@ -51,18 +49,17 @@ public class MemberService {
                 .body(new BaseResponse(HttpStatus.OK.value(), "로그아웃 되었습니다"));
     }
 
-
-    public List<CalendarResponseDto> confirmCalendar(Long userId) {
-        Member member = memberRepository.findById(userId).orElseThrow(()
-                -> new BaseException(404, "유효하지 않은 멤버 ID"));
-
-        // 여기 getCalendars()로 바꿔야하나
-        List<CalendarResponseDto> result = member.getCalendars().stream()
-                .map(calendar -> new CalendarResponseDto(calendar.getCalender_id(), calendar.getCalendar_name(),
-                        calendar.getCalendar_date())).collect(Collectors.toList());
-
-        return result;
-    }
+    // 사용자 일정 확인 (월별)
+//    public CalendarResponseDto confirmCalendar(Long memberId) {
+//        Member member = memberRepository.findById(memberId).orElseThrow(()
+//                -> new BaseException(404, "유효하지 않은 멤버 ID"));
+//
+//        // 여기 getCalendars()로 바꿔야하나
+//        List<CalendarResponseDto> result = new CalendarResponseDto(calendar.getCalender_id(), calendar.getCalendar_name(),
+//                        calendar.getCalendar_date());
+//
+//        return result;
+//    }
 
     // 사용자 정보(키) 받기
     public MemberHeightResponseDto receiveMemberHgtInform(Long memberId, MemberHeightRequestDto memberHeightRequestDto) {
@@ -128,6 +125,15 @@ public class MemberService {
 
         ProgressResponseDto progressResponseDto = new ProgressResponseDto(progress.getProgress_id());
         return progressResponseDto;
-
     }
+
+    // 캘린더에 피드백 표시
+//    public List<ViewFeedbackResponseDto> CalendarFeedback(Long memberId) {
+//        Member member = memberRepository.findById(memberId).orElseThrow(()
+//                ->new BaseException(404, "유효하지 않은 멤버 아이디"));
+//
+//        List<ViewFeedbackResponseDto> result = member.getMemberProgresses()
+//
+//        return result;
+//    }
 }
