@@ -1,6 +1,8 @@
 package com.witheat.WithEatServer.Controller;
 
+import com.witheat.WithEatServer.Domain.entity.Member;
 import com.witheat.WithEatServer.Repository.SuggestRepository;
+import com.witheat.WithEatServer.Service.MemberService;
 import com.witheat.WithEatServer.Service.SuggestService;
 import com.witheat.WithEatServer.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +18,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/suggest")
 public class SuggestController {
-    @Autowired
     private final SuggestRepository suggestRepository;
-    @Autowired
     private final SuggestService suggestService;
+    private final MemberService memberService;
 
     @PostMapping("/{memberId}/{suggestId}/diey-type")
     public ResponseEntity<BaseResponse<Long>> dietType(
@@ -38,4 +39,5 @@ public class SuggestController {
                 .body(new BaseResponse<>(HttpStatus.OK.value(),
                         "목표가 설정되었습니다.", suggestId));
     }
+
 }

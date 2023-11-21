@@ -10,6 +10,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberWeightRequestDto {
-    private int weight;
+    private Long weight;
     private LocalDate weight_date;
 }

@@ -53,17 +53,18 @@ public class Suggest {
     }
 
     @Builder
-    public Suggest (String plan_name, int breakfast, int lunch, int dinner, int snack,Member member) {
+    public Suggest (String plan_name, int breakfast, int lunch, int dinner, int snack,Member member
+    ,int carbohydrate, int protein, int fat) {
         this.plan_name = plan_name;
         this.breakfast = breakfast;
         this.lunch = lunch;
         this.dinner = dinner;
         this.snack = snack;
         this.member = member;
+        this.carbohydrate = carbohydrate;
+        this.protein = protein;
+        this.fat = fat;
     }
 
-    //칼로리 계산을 위한 메서드
-    public void calculateKcal(int carbohydrate, int protein, int fat){
 
-    }
 }

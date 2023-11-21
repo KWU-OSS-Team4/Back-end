@@ -20,7 +20,7 @@ public class Weight extends Time {
 
     //@Getter
     @Column(nullable = false)
-    private int weight;
+    private Long weight;
 
     @Column(nullable = false)
     private LocalDate weight_date; //몸무게 마지막 변경 날짜
@@ -34,12 +34,12 @@ public class Weight extends Time {
     private Member member;
 
     @Builder
-    public Weight(int weight, LocalDate weight_date) {
+    public Weight(Long weight, LocalDate weight_date) {
         this.weight = weight;
         this.weight_date = weight_date;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(Long weight) {
         this.weight = weight;
     }
 

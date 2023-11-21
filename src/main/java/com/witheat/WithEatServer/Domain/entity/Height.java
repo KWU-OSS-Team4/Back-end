@@ -19,7 +19,7 @@ public class Height extends Time{
     private Long height_id;
 
     @Column(nullable = false)
-    private int height;
+    private Long height;
 
     @Column (nullable = false)
     private LocalDate height_date;
@@ -34,7 +34,7 @@ public class Height extends Time{
     private final List<MemberHeight> memberHeights = new ArrayList<>();
 
     @Builder
-    public Height(Integer height, LocalDate height_date) {
+    public Height(Long height, LocalDate height_date) {
         this.height = height;
         this.height_date = height_date;
     }
