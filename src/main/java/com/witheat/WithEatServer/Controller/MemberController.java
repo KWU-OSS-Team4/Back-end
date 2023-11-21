@@ -57,7 +57,7 @@ public class MemberController {
     }
 
     // 사용자 목표 삭제
-    @DeleteMapping("{memberId}/calendar/{calendarId}")
+    @DeleteMapping("/{memberId}/calendar/{calendarId}")
     public ResponseEntity<BaseResponse> deleteCalendar(@PathVariable("memberId") Long memberId,
                                                        @PathVariable("calendarId") Long calendarId) {
         try {
@@ -130,7 +130,7 @@ public class MemberController {
     }
 
     // 유저 정보(키) 받기
-    @PostMapping("{memberId}/information_height")
+    @PostMapping("/{memberId}/information_height")
     public ResponseEntity<BaseResponse<MemberHeightResponseDto>> receiveHeightInfo(
             @RequestBody MemberHeightRequestDto memberHeightRequestDto,
             @PathVariable("memberId") Long memberId) {
@@ -151,7 +151,7 @@ public class MemberController {
     }
 
     // 유저 정보(몸무게) 받기
-    @PostMapping("{memberId}/information_weight")
+    @PostMapping("/{memberId}/information_weight")
     public ResponseEntity<BaseResponse<MemberWeightResponseDto>> receiveWeightInfo(
             @RequestBody MemberWeightRequestDto memberWeightRequestDto,
             @PathVariable("memberId") Long memberId) {
@@ -172,7 +172,7 @@ public class MemberController {
     }
 
     //사용자 메인 페이지 몸무게 변경
-    @GetMapping("{memberId}/mypage/weight")
+    @GetMapping("/{memberId}/mypage/weight")
     public ResponseEntity<BaseResponse<MemberWeightResponseDto>> updateMemberWeight (
             @PathVariable("memberId") Long memberId,
             @RequestBody MemberWeightRequestDto memberWeightRequestDto){
@@ -197,7 +197,7 @@ public class MemberController {
     }
 
     //몸무게 체중 변화 그래프
-    @GetMapping("{memberId}/mypage/{weightId}")
+    @GetMapping("/{memberId}/mypage/{weightId}")
     public ResponseEntity<BaseResponse<List<MemberWeightResponseDto>>> weightChangeGraph(
             @PathVariable("memberId") Long memberId,
             @PathVariable("weightId") Long weightId){
@@ -215,6 +215,5 @@ public class MemberController {
                     status(e.getCode())
                     .body(new BaseResponse<>(e.getCode(),e.getMessage(),null));
         }
-
     }
 }

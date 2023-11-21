@@ -24,7 +24,7 @@ public class Calendar extends Time {
     private LocalDate calendar_date;
 
     @Column
-    private String feedback;
+    private String feedback;  // 없어진 것?
 
     @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<MemberCalendar> memberCalendars = new ArrayList<>();
