@@ -118,7 +118,7 @@ public class MemberService {
         //사용자 식별을 위해 Id 사용하여 사용자 찾기
         Member member = memberRepository.findById(memberId).orElseThrow(()
                 -> new BaseException(404, "유효하지 않은 유저 ID"));
-        Long newWeight = memberWeightRequestDto.getWeight();
+        int newWeight = memberWeightRequestDto.getWeight();
 
         //최신 몸무게를 저장
         //새로운 Weight 엔티티 생성(해당 엔티티에 몸무게 정보가 있기 때문)
@@ -139,10 +139,10 @@ public class MemberService {
     public List<MemberWeightResponseDto> getWeight(Long memberId, Long weightId){
         //오류 찾기
         Member member = memberRepository.findById(memberId).orElseThrow(()
-                -> new BaseException(404, "유효하지 않은 유저 ID"));
+                -> new BaseException(404, "Member not found"));
 
         Weight weight = weightRepository.findById(weightId).orElseThrow(()
-                -> new BaseException(404, "유효하지 않은 weight ID"));
+                -> new BaseException(404, "Weight not found"));
 
         List<MemberWeight> memberWeights = memberWeightRepository.findByMemberAndWeight(member,weight);
 

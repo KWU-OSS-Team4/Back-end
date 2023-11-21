@@ -58,6 +58,7 @@ public class Member extends Time {
     //cascade ~ : 부모 엔티티(Member)의 변경이 자식엔티티에 영향을 미치돌고 함
     //orph ~ : 부모 엔티티에서 제거된 자식 엔티티도 DB에서 삭제되도록 함
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("suggest_id DESC")
     public List<Suggest> suggests = new ArrayList<>();
 
     @Builder
@@ -83,6 +84,9 @@ public class Member extends Time {
         return member_id;
     }
 
+    public List<Suggest> getSuggests(){
+        return this.suggests;
+    }
     public UsernamePasswordAuthenticationToken getAuthenticationToken() {
         return new UsernamePasswordAuthenticationToken(email, password);
     }

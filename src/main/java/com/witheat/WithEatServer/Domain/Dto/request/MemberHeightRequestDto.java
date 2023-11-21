@@ -10,6 +10,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberHeightRequestDto {
-    private Long height;
+    private int height;
     private LocalDate height_date;
 }
