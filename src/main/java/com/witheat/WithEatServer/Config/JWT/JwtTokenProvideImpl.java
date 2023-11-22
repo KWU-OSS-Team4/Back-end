@@ -25,6 +25,7 @@ import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -62,7 +63,7 @@ public class JwtTokenProvideImpl implements JwtTokenProvide{
                 .compact();
 
         return JwtToken.builder()
-                .type("Bearer")
+                .grantType("Bearer")
                 .accessToken(accessToken)
                 .memberId(member.getMember_id())
                 .build();
@@ -109,7 +110,8 @@ public class JwtTokenProvideImpl implements JwtTokenProvide{
             throw new RuntimeException("권한 정보가 없는 토큰");
         }
 
-        Collection<? extends GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+        Collection<? extends GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        //List.of 가 아니라 Array.asList 라고 하긴 했었는데
 
         UserDetails principal = new User(claims.getSubject(), "", authorities);
 
@@ -128,7 +130,7 @@ public class JwtTokenProvideImpl implements JwtTokenProvide{
             return;
         }
 
-        Long memberId = getMemberId(parts);   // Whyrano...
+        Long memberId = getMemberId(parts);
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(()->new BaseException(HttpStatus.FORBIDDEN.value(), "유효하지 않은 유저 ID"));
@@ -157,7 +159,8 @@ public class JwtTokenProvideImpl implements JwtTokenProvide{
                 .getExpiration();
 
         // 현재시간
-        Long now = new Date().getTime();
+        long now = new Date().getTime();
+        // Long 인가...
 
         return (expiration.getTime() - now);
     }

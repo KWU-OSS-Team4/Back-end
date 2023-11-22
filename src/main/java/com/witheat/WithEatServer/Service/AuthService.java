@@ -25,7 +25,7 @@ public class AuthService {
     @Transactional
 //    @Override   // 이거 필요한건가....???
     public void join(MemberRequestDto memberRequestDto) {
-        validateUserRequest(memberRequestDto);
+        validateMemberRequest(memberRequestDto);
         validateDuplicateEmail(memberRequestDto.getEmail());
         memberRepository.save(new Member(memberRequestDto));  // 뭐야 여기 왜이래
     }
@@ -39,7 +39,7 @@ public class AuthService {
                 jwtTokenProvideImpl.generateToken(member));
     }
 
-    private void validateUserRequest(MemberRequestDto memberRequestDto) {
+    private void validateMemberRequest(MemberRequestDto memberRequestDto) {
         if(memberRequestDto.getName() == null) throw new BadRequestException("이름을 입력하세요");
         if(memberRequestDto.getEmail() == null) throw new BadRequestException("이메일을 입력하세요");
         if(memberRequestDto.getPassword() == null) throw new BadRequestException("비밀번호를 입력하세요");
