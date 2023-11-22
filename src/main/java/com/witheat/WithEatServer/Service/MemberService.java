@@ -1,6 +1,7 @@
 package com.witheat.WithEatServer.Service;
 
 import com.witheat.WithEatServer.Config.JWT.JwtTokenProvideImpl;
+import com.witheat.WithEatServer.Domain.Dto.request.AchieveStatusRequestDto;
 import com.witheat.WithEatServer.Domain.Dto.request.MemberHeightRequestDto;
 import com.witheat.WithEatServer.Domain.Dto.request.MemberWeightRequestDto;
 import com.witheat.WithEatServer.Domain.Dto.response.*;
@@ -36,7 +37,6 @@ public class MemberService {
     private final MemberWeightRepository memberWeightRepository;
     private final HeightRepository heightRepository;
     private final WeightRepository weightRepository;
-    private final CalendarRepository calendarRepository;
 
 //    @Override
     @Transactional
@@ -151,5 +151,24 @@ public class MemberService {
 
         return weights;
 
+    }
+
+    // 성취도 통계
+    public AchieveCountResponseDto countAchieve(Long memberId,
+                                                AchieveStatusRequestDto achieveStatusRequestDto) {
+        Member member = memberRepository.findById(memberId).orElseThrow(()
+                -> new BaseException(404, "Member not found"));
+
+        if("success".equals(achieveStatusRequestDto.getStatus())) {
+            member.setAchieve_success(member.getAchieve_success() + 1);
+        } else if ("fail".equals(achieveStatusRequestDto.getStatus())) {
+            member.setAchieve_fail(member.getAchieve_fail() + 1);
+        }
+        memberRepository.save(member);
+
+        return AchieveCountResponseDto.builder()
+                .achieve_success(member.getAchieve_success())
+                .achieve_fail(member.getAchieve_fail())
+                .build();
     }
 }
