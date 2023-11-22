@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
+@DynamicInsert
 public class Calendar extends Time {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +24,7 @@ public class Calendar extends Time {
     private String calendar_name;
 
     @Column(nullable = false)
+    @CreationTimestamp
     private LocalDate calendar_date;
 
     @Column

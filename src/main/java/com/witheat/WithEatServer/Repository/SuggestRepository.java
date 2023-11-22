@@ -5,7 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface SuggestRepository extends JpaRepository<Suggest,Long> {
-    //필요한 쿼리 메서드 추가
+    //List<Suggest> findByMemberId(Long member_Id);
 }

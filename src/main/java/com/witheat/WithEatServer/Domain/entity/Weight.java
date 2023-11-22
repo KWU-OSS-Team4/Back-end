@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
+@DynamicInsert
 public class Weight extends Time {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +26,7 @@ public class Weight extends Time {
     private int weight;
 
     @Column(nullable = false)
+    @CreationTimestamp
     private LocalDate weight_date; //몸무게 마지막 변경 날짜
 
     //user가 weight 를 관리하게 하기

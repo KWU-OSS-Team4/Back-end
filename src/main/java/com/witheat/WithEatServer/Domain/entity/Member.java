@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import java.time.LocalDate;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @Entity
+@DynamicInsert
 public class Member extends Time {
 
     @Id
@@ -40,8 +42,9 @@ public class Member extends Time {
     @Column(nullable = false)
     private String plan_name;
 
-    @Column(nullable = false)
+    /*@Column(nullable = false)
     private int requiredCalories;
+*/
 
     // 성취도 위한 변수들
     @Column(nullable = false)
@@ -73,6 +76,7 @@ public class Member extends Time {
     //cascade ~ : 부모 엔티티(Member)의 변경이 자식엔티티에 영향을 미치돌고 함
     //orph ~ : 부모 엔티티에서 제거된 자식 엔티티도 DB에서 삭제되도록 함
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("suggest_id DESC")
     public List<Suggest> suggests = new ArrayList<>();
 
     @Builder
@@ -102,6 +106,9 @@ public class Member extends Time {
         return member_id;
     }
 
+    public List<Suggest> getSuggests(){
+        return this.suggests;
+    }
     public UsernamePasswordAuthenticationToken getAuthenticationToken() {
         return new UsernamePasswordAuthenticationToken(email, password);
     }

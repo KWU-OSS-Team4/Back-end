@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
@@ -13,6 +15,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
+@DynamicInsert
 public class Height extends Time{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +25,7 @@ public class Height extends Time{
     private int height;
 
     @Column (nullable = false)
+    @CreationTimestamp
     private LocalDate height_date;
 
     //Member과의 관계
@@ -34,7 +38,7 @@ public class Height extends Time{
     private final List<MemberHeight> memberHeights = new ArrayList<>();
 
     @Builder
-    public Height(Integer height, LocalDate height_date) {
+    public Height(int height, LocalDate height_date) {
         this.height = height;
         this.height_date = height_date;
     }

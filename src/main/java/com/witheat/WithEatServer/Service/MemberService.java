@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -138,10 +139,10 @@ public class MemberService {
     public List<MemberWeightResponseDto> getWeight(Long memberId, Long weightId){
         //오류 찾기
         Member member = memberRepository.findById(memberId).orElseThrow(()
-                -> new BaseException(404, "유효하지 않은 유저 ID"));
+                -> new BaseException(404, "Member not found"));
 
         Weight weight = weightRepository.findById(weightId).orElseThrow(()
-                -> new BaseException(404, "유효하지 않은 weight ID"));
+                -> new BaseException(404, "Weight not found"));
 
         List<MemberWeight> memberWeights = memberWeightRepository.findByMemberAndWeight(member,weight);
 
@@ -170,5 +171,38 @@ public class MemberService {
                 .achieve_success(member.getAchieve_success())
                 .achieve_fail(member.getAchieve_fail())
                 .build();
+    }
+
+    //최신 정보를 불러오기 메서드(suggestService에서 사용자 칼로리 계산하는데 사용)
+    public Height getLatestHeight (Member member)
+    {
+        //리스트로 되어있는 member의 키의 값을 다 가져온 후
+        List<MemberHeight> memberHeights = member.getMemberHeights();
+
+        if(memberHeights.isEmpty()){
+            return null;
+        }
+
+        //최신 날짜순으로 정렬
+        Collections.sort(memberHeights);
+
+        //첫 번째 요소가 최신 정보
+        return memberHeights.get(0).getHeight();
+    }
+
+    public Weight getLatestWeight (Member member)
+    {
+        //리스트로 되어있는 member의 키의 값을 다 가져온 후
+        List<MemberWeight> memberWeights = member.getMemberWeights();
+
+        if(memberWeights.isEmpty()){
+            return null;
+        }
+
+        //최신 날짜순으로 정렬
+        Collections.sort(memberWeights);
+
+        //첫 번째 요소가 최신 정보
+        return memberWeights.get(0).getWeight();
     }
 }

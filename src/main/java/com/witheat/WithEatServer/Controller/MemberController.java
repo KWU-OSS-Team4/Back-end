@@ -176,24 +176,15 @@ public class MemberController {
     public ResponseEntity<BaseResponse<MemberWeightResponseDto>> updateMemberWeight (
             @PathVariable("memberId") Long memberId,
             @RequestBody MemberWeightRequestDto memberWeightRequestDto){
-        //구현
-        try{
+            //구현
             //몸무게 받기(업데이트)
             memberService.memberWeightResponseDto(memberId, memberWeightRequestDto);
 
             //응답처리는 ok로 몸무게가 수정되었습니다로 하기
             return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(new BaseResponse<>(HttpStatus.OK.value(), "몸무게 수정되었습니다.", null));
+                .status(HttpStatus.OK)
+                .body(new BaseResponse<>(HttpStatus.OK.value(), "몸무게 수정되었습니다.", null));
 
-        }catch(BaseException e){
-            //에러
-            BaseErrorResponse errorResponse = new BaseErrorResponse(e.getCode(), e.getMessage());
-
-            return ResponseEntity
-                    .status(e.getCode())
-                    .body(new BaseResponse<>(e.getCode(), e.getMessage(), null));
-        }
     }
 
     //몸무게 체중 변화 그래프
