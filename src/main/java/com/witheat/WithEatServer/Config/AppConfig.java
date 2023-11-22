@@ -6,7 +6,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class AppConfig implements WebMvcConfigurer {
-    String[] accessURL = {"http://localhost:3000"};
+    String[] accessURL = {"http://localhost:3000", "https://localhost:3000"};
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {

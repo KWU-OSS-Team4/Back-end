@@ -42,6 +42,8 @@ public class Member extends Time {
     @Column(nullable = false)
     private String plan_name;
 
+
+
     /*@Column(nullable = false)
     private int requiredCalories;
 */
