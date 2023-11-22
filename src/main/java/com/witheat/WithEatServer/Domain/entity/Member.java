@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -44,6 +45,21 @@ public class Member extends Time {
     /*@Column(nullable = false)
     private int requiredCalories;
 */
+
+    // 성취도 위한 변수들
+    @Column(nullable = false)
+    private int achieve_success;
+
+    @Column(nullable = false)
+    private int achieve_fail;
+
+    @Column(nullable = false)
+    private LocalDate achieve_date;
+
+    // height, weight는 OneToMany
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    public List<UserHeight>
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<MemberHeight> memberHeights = new ArrayList<>();    // 바뀜..?
 
@@ -64,13 +80,17 @@ public class Member extends Time {
     public List<Suggest> suggests = new ArrayList<>();
 
     @Builder
-    public Member(String name, String email, String password, boolean agreement, boolean gender, String plan_name) {
+    public Member(String name, String email, String password, boolean agreement, boolean gender, String plan_name,
+                  int achieve_success, int achieve_fail, LocalDate achieve_date) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.agreement = agreement;
         this.gender = gender;
         this.plan_name = plan_name;
+        this.achieve_success = achieve_success;
+        this.achieve_fail = achieve_fail;
+        this.achieve_date = achieve_date;
     }
 
     public Member(MemberRequestDto dto) {

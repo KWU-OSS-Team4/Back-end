@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final JwtTokenProvideImpl jwtTokenProvideImpl;
 
-    private String[] possibleAccess = {"/api/auth/signup", "/api/auth/login"};
+    private final String[] possibleAccess = {"/api/auth/signup", "/api/auth/login"};   // final 키워드 추가했음
 
     public SecurityConfig(JwtTokenProvideImpl jwtTokenProvideImpl, RedisTemplate redisTemplate) {
         this.jwtTokenProvideImpl = jwtTokenProvideImpl;
