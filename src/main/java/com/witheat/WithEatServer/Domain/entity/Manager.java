@@ -1,5 +1,5 @@
-package com.witheat.WithEatServer.Domain.entity;
-
+//package com.witheat.WithEatServer.Domain.entity;
+/*
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,3 +39,5 @@ public class Manager {
         this.amount = amount;
     }
 }
+
+ */

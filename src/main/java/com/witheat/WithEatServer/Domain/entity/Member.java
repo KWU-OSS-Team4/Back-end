@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @Entity
+@DynamicInsert
 public class Member extends Time {
 
     @Id
@@ -39,9 +41,9 @@ public class Member extends Time {
     @Column(nullable = false)
     private String plan_name;
 
-    @Column(nullable = false)
+    /*@Column(nullable = false)
     private int requiredCalories;
-
+*/
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<MemberHeight> memberHeights = new ArrayList<>();    // 바뀜..?
 

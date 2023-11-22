@@ -4,12 +4,15 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
 @Entity
+@DynamicInsert
 public class Achieve extends Time { 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +25,7 @@ public class Achieve extends Time {
     private int achievement_fail;
     
     @Column(nullable = false)
+    @CreationTimestamp
     private LocalDateTime create_at;
     
     // @OneToMany 필요할 듯 싶은데
